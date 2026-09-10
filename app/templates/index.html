@@ -1,275 +1,92 @@
 <!DOCTYPE html>
 <html lang="en">
-
 <head>
 <meta charset="UTF-8">
-<meta name="viewport" content="width=device-width, initial-scale=1">
+<meta name="viewport" content="width=device-width,initial-scale=1">
 <title>Nova AI</title>
 
-<link rel="preconnect" href="https://fonts.googleapis.com">
-<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
-
 <style>
-:root {
-    --bg-dark: #050508;
-    --card-bg: rgba(14, 14, 20, 0.72);
-    --border-subtle: rgba(255, 255, 255, 0.08);
-    --accent: #818cf8;
-    --accent-glow: rgba(129, 140, 248, 0.45);
-    --accent-secondary: #c084fc;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-tertiary: #64748b;
+body{
+    margin:0;
+    height:100vh;
+    display:grid;
+    place-items:center;
+    background:#111;
+    color:white;
+    font-family:Arial;
 }
 
-* {
-    box-sizing: border-box;
-    margin: 0;
-    padding: 0;
-    -webkit-font-smoothing: antialiased;
+.card{
+    width:400px;
+    padding:25px;
+    text-align:center;
+    background:#222;
+    border:1px solid #444;
+    border-radius:10px;
 }
 
-body {
-    min-height: 100vh;
-    display: grid;
-    place-items: center;
-    background-color: var(--bg-dark);
-    color: var(--text-primary);
-    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    overflow: hidden;
-    position: relative;
+.mic{
+    width:75px;
+    height:75px;
+    border:0;
+    border-radius:50%;
+    font-size:30px;
+    cursor:pointer;
+    background:#eee;
 }
 
-/* Atmospheric ambient aurora glow */
-body::before,
-body::after {
-    content: '';
-    position: absolute;
-    border-radius: 50%;
-    filter: blur(120px);
-    opacity: 0.55;
-    pointer-events: none;
-    z-index: 0;
-    animation: drift 14s ease-in-out infinite alternate;
+.mic.listening{
+    background:#aaa;
 }
 
-body::before {
-    width: 380px;
-    height: 380px;
-    background: radial-gradient(circle, #6366f1 0%, rgba(99, 102, 241, 0) 70%);
-    top: 10%;
-    left: 15%;
+.status{
+    margin:15px;
+    color:#aaa;
 }
 
-body::after {
-    width: 440px;
-    height: 440px;
-    background: radial-gradient(circle, #a855f7 0%, rgba(168, 85, 247, 0) 70%);
-    bottom: 10%;
-    right: 15%;
-    animation-duration: 18s;
+.command{
+    margin:10px;
+    color:#ccc;
 }
 
-@keyframes drift {
-    0% { transform: translate(0, 0) scale(1); }
-    100% { transform: translate(40px, 30px) scale(1.12); }
+.editor{
+    display:none;
+    margin-top:20px;
+    text-align:left;
 }
 
-/* Glassmorphism Card Container */
-.card {
-    position: relative;
-    z-index: 1;
-    width: 370px;
-    padding: 44px 32px 38px;
-    text-align: center;
-    background: var(--card-bg);
-    border: 1px solid var(--border-subtle);
-    border-radius: 40px;
-    backdrop-filter: blur(30px);
-    -webkit-backdrop-filter: blur(30px);
-    box-shadow: 
-        0 30px 60px -20px rgba(0, 0, 0, 0.8),
-        inset 0 1px 0 rgba(255, 255, 255, 0.12),
-        inset 0 0 20px rgba(255, 255, 255, 0.02);
-    display: flex;
-    flex-direction: column;
-    align-items: center;
+.recipient{
+    color:#aaa;
+    font-size:13px;
 }
 
-/* Badge styling */
-.brand-badge {
-    display: inline-flex;
-    align-items: center;
-    gap: 7px;
-    padding: 5px 14px;
-    margin-bottom: 22px;
-    background: rgba(255, 255, 255, 0.04);
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 9999px;
-    font-size: 11px;
-    font-weight: 600;
-    letter-spacing: 0.08em;
-    text-transform: uppercase;
-    color: var(--text-secondary);
+input,textarea{
+    width:100%;
+    margin:6px 0;
+    padding:10px;
+    box-sizing:border-box;
+    background:#111;
+    color:white;
+    border:1px solid #444;
+    border-radius:5px;
 }
 
-.brand-badge span {
-    width: 6px;
-    height: 6px;
-    border-radius: 50%;
-    background: #10b981;
-    box-shadow: 0 0 10px #10b981;
-    animation: status-blink 2.5s infinite ease-in-out;
+textarea{
+    height:130px;
+    resize:vertical;
 }
 
-@keyframes status-blink {
-    0%, 100% { opacity: 1; transform: scale(1); }
-    50% { opacity: 0.4; transform: scale(0.85); }
+button.action{
+    padding:10px 14px;
+    margin-top:5px;
+    border:0;
+    border-radius:5px;
+    cursor:pointer;
 }
 
-.card h2 {
-    font-size: 28px;
-    font-weight: 700;
-    letter-spacing: -0.03em;
-    background: linear-gradient(135deg, #ffffff 30%, #a5b4fc 100%);
-    -webkit-background-clip: text;
-    -webkit-text-fill-color: transparent;
-    margin-bottom: 6px;
-}
-
-.card p {
-    font-size: 13.5px;
-    color: var(--text-secondary);
-    font-weight: 400;
-    margin-bottom: 34px;
-    letter-spacing: -0.01em;
-}
-
-/* Mic Interactive Controls */
-.mic-wrapper {
-    position: relative;
-    display: inline-flex;
-    align-items: center;
-    justify-content: center;
-    margin-bottom: 28px;
-}
-
-.mic {
-    width: 90px;
-    height: 90px;
-    border-radius: 50%;
-    border: 1px solid rgba(255, 255, 255, 0.12);
-    cursor: pointer;
-    background: radial-gradient(circle at 35% 25%, #252538 0%, #101017 100%);
-    box-shadow: 
-        0 14px 28px -4px rgba(0, 0, 0, 0.65),
-        inset 0 1px 1px rgba(255, 255, 255, 0.25);
-    display: flex;
-    align-items: center;
-    justify-content: center;
-    transition: all 0.35s cubic-bezier(0.34, 1.56, 0.64, 1);
-    user-select: none;
-    -webkit-tap-highlight-color: transparent;
-    outline: none;
-}
-
-.mic-icon {
-    width: 32px;
-    height: 32px;
-    fill: #f1f5f9;
-    transition: transform 0.3s ease, fill 0.3s ease;
-}
-
-.mic:hover:not(:disabled) {
-    transform: translateY(-3px) scale(1.04);
-    border-color: rgba(255, 255, 255, 0.28);
-    box-shadow: 
-        0 20px 35px -5px rgba(0, 0, 0, 0.75),
-        0 0 20px rgba(99, 102, 241, 0.3),
-        inset 0 1px 1px rgba(255, 255, 255, 0.4);
-}
-
-.mic:hover:not(:disabled) .mic-icon {
-    transform: scale(1.05);
-    fill: #ffffff;
-}
-
-.mic:active:not(:disabled) {
-    transform: scale(0.95);
-}
-
-.mic:disabled {
-    opacity: 0.3;
-    cursor: not-allowed;
-    filter: grayscale(1);
-}
-
-/* Dynamic Active Listening Ripple Animation */
-.listening {
-    transform: scale(1.06) !important;
-    border-color: var(--accent) !important;
-    background: radial-gradient(circle at 35% 25%, #2d2a54 0%, #121020 100%) !important;
-    animation: radar-pulse 2s infinite cubic-bezier(0.2, 0, 0.3, 1);
-}
-
-.listening .mic-icon {
-    fill: #ffffff !important;
-    transform: scale(1.1);
-}
-
-@keyframes radar-pulse {
-    0% {
-        box-shadow: 
-            0 0 0 0 rgba(129, 140, 248, 0.5),
-            0 0 0 0 rgba(192, 132, 252, 0.3),
-            0 0 30px var(--accent-glow);
-    }
-    50% {
-        box-shadow: 
-            0 0 0 14px rgba(129, 140, 248, 0.15),
-            0 0 0 28px rgba(192, 132, 252, 0.05),
-            0 0 45px var(--accent-glow);
-    }
-    100% {
-        box-shadow: 
-            0 0 0 22px rgba(129, 140, 248, 0),
-            0 0 0 42px rgba(192, 132, 252, 0),
-            0 0 30px var(--accent-glow);
-    }
-}
-
-/* Status Label */
-.status {
-    font-size: 13px;
-    font-weight: 500;
-    color: var(--text-secondary);
-    letter-spacing: 0.02em;
-    min-height: 20px;
-    transition: color 0.3s ease;
-}
-
-/* Song Badge Output */
-.song {
-    margin-top: 14px;
-    font-size: 12.5px;
-    font-weight: 600;
-    color: #e0e7ff;
-    background: linear-gradient(135deg, rgba(255, 255, 255, 0.06), rgba(255, 255, 255, 0.02));
-    border: 1px solid rgba(255, 255, 255, 0.1);
-    border-radius: 14px;
-    padding: 7px 16px;
-    display: inline-block;
-    max-width: 90%;
-    white-space: nowrap;
-    overflow: hidden;
-    text-overflow: ellipsis;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.3);
-    backdrop-filter: blur(10px);
-}
-
-.song:empty {
-    display: none;
+.primary{
+    background:#666;
+    color:white;
 }
 </style>
 </head>
@@ -278,46 +95,72 @@ body::after {
 
 <div class="card">
 
-    <div class="brand-badge">
-        <span></span> Voice Player
-    </div>
+<h2>Nova AI</h2>
 
-    <h2>Nova AI</h2>
+<p>Say a song name or create an email</p>
 
-    <p>Say a song name</p>
+<button id="mic" class="mic">🎙️</button>
 
-    <div class="mic-wrapper">
-        <button id="mic" class="mic" aria-label="Microphone">
-            <!-- Modern Minimal SVG Icon -->
-            <svg class="mic-icon" viewBox="0 0 24 24">
-                <path d="M12 14c1.66 0 3-1.34 3-3V5c0-1.66-1.34-3-3-3S9 3.34 9 5v6c0 1.66 1.34 3 3 3z"/>
-                <path d="M17 11c0 2.76-2.24 5-5 5s-5-2.24-5-5H5c0 3.53 2.61 6.43 6 6.92V21h2v-3.08c3.39-.49 6-3.39 6-6.92h-2z"/>
-            </svg>
-        </button>
-    </div>
+<div id="status" class="status">
+    Tap microphone
+</div>
 
-    <div id="status" class="status">
-        Tap microphone
-    </div>
+<div id="command" class="command"></div>
 
-    <div id="song" class="song"></div>
+
+<!-- Gmail Editor -->
+
+<div id="editor" class="editor">
+
+    <div id="recipient" class="recipient"></div>
+
+    <input id="subject"
+           placeholder="Email subject">
+
+    <textarea id="body"
+              placeholder="Email body"></textarea>
+
+    <button id="open"
+            class="action primary">
+        Open in Gmail
+    </button>
+
+    <button id="regen"
+            class="action">
+        Regenerate
+    </button>
 
 </div>
 
+</div>
+
+
 <script>
 
-const mic=document.getElementById("mic");
-const status=document.getElementById("status");
-const song=document.getElementById("song");
+const $=id=>document.getElementById(id);
 
-const SpeechRecognition=
-    window.SpeechRecognition ||
+const mic=$("mic");
+const status=$("status");
+const commandBox=$("command");
+
+const editor=$("editor");
+const recipient=$("recipient");
+const subject=$("subject");
+const body=$("body");
+
+const SR=
+    window.SpeechRecognition||
     window.webkitSpeechRecognition;
 
-let youtubeTab=null;
+let recognition;
 let listening=false;
+let lastCommand="";
+let youtubeTab=null;
 
-if(!SpeechRecognition){
+
+// Speech Recognition
+
+if(!SR){
 
     status.textContent=
         "Speech recognition unavailable";
@@ -326,12 +169,12 @@ if(!SpeechRecognition){
 
 }else{
 
-    const recognition=
-        new SpeechRecognition();
+    recognition=new SR();
 
     recognition.lang="en-US";
     recognition.continuous=false;
     recognition.interimResults=false;
+
 
     recognition.onstart=()=>{
 
@@ -341,128 +184,230 @@ if(!SpeechRecognition){
 
         status.textContent=
             "Listening...";
-
     };
+
 
     recognition.onend=()=>{
 
         listening=false;
 
         mic.classList.remove("listening");
-
     };
 
-    recognition.onerror=()=>{
+
+    recognition.onerror=e=>{
 
         listening=false;
 
         mic.classList.remove("listening");
 
-        status.textContent="Try again";
-
+        status.textContent=
+            "Voice error: "+e.error;
     };
 
-    recognition.onresult=async(event)=>{
 
-        const command=
-            event.results[0][0]
+    recognition.onresult=e=>{
+
+        const text=
+            e.results[0][0]
             .transcript
             .trim();
 
-        if(!command){
+        if(!text){
 
             status.textContent=
-                "No song detected";
+                "No command detected";
 
             return;
-
         }
 
-        song.textContent=command;
+        lastCommand=text;
 
-        status.textContent=
-            "Finding song...";
+        commandBox.textContent=text;
 
-        try{
-
-            const response=
-                await fetch(
-                    "/youtube/play",
-                    {
-                        method:"POST",
-
-                        headers:{
-                            "Content-Type":
-                                "application/json"
-                        },
-
-                        body:JSON.stringify({
-                            command:command
-                        })
-                    }
-                );
-
-            const data=
-                await response.json();
-
-            if(!data.success){
-
-                status.textContent=
-                    data.message ||
-                    "Song not found";
-
-                return;
-
-            }
-
-            if(!youtubeTab ||
-               youtubeTab.closed){
-
-                youtubeTab=
-                    window.open(
-                        data.url,
-                        "NovaYouTube"
-                    );
-
-            }else{
-
-                youtubeTab.location.href=
-                    data.url;
-
-                youtubeTab.focus();
-
-            }
-
-            status.textContent="Playing";
-
-        }catch(error){
-
-            console.error(error);
-
-            status.textContent=
-                "Server connection failed";
-
-        }
-
+        processCommand(text);
     };
+
 
     mic.onclick=()=>{
 
-        if(listening)
-            return;
+        if(listening)return;
 
         try{
-
             recognition.start();
-
-        }catch(error){
-
-            console.log(error);
-
+        }catch(e){
+            console.log(e);
         }
 
     };
 
+}
+
+
+// Gmail command detection
+
+function isGmail(command){
+
+    return /email|mail|gmail|send|compose|write.*email/i
+        .test(command);
+}
+
+
+// Main command processor
+
+async function processCommand(command){
+
+    const gmail=isGmail(command);
+
+    status.textContent=
+        gmail
+        ?"Generating email..."
+        :"Finding song...";
+
+    try{
+
+        const response=await fetch(
+            gmail
+            ?"/agent"
+            :"/youtube/play",
+            {
+                method:"POST",
+
+                headers:{
+                    "Content-Type":
+                        "application/json"
+                },
+
+                body:JSON.stringify({
+                    command:command
+                })
+            }
+        );
+
+        const data=
+            await response.json();
+
+        if(!response.ok||!data.success){
+
+            throw Error(
+                data.message||
+                "Request failed"
+            );
+        }
+
+
+        if(gmail){
+
+            showEmail(data);
+
+        }else{
+
+            playYouTube(data);
+
+        }
+
+    }catch(error){
+
+        console.error(error);
+
+        status.textContent=
+            error.message||
+            "Server connection failed";
+    }
+}
+
+
+// Show generated email
+
+function showEmail(data){
+
+    recipient.dataset.email=
+        data.recipient||"";
+
+    recipient.textContent=
+        data.recipient
+        ?"To: "+data.recipient
+        :"Recipient not specified";
+
+    subject.value=
+        data.subject||"";
+
+    body.value=
+        data.body||"";
+
+    editor.style.display="block";
+
+    status.textContent=
+        "Email ready. Review or edit it.";
+}
+
+
+// Open Gmail
+
+$("open").onclick=()=>{
+
+    const url=
+        "https://mail.google.com/mail/u/0/?"+
+        new URLSearchParams({
+
+            view:"cm",
+            fs:"1",
+
+            to:
+                recipient.dataset.email||"",
+
+            su:
+                subject.value,
+
+            body:
+                body.value
+        });
+
+    const win=
+        window.open(
+            url,
+            "NovaGmail"
+        );
+
+    if(!win){
+
+        status.textContent=
+            "Please allow popups for this site.";
+    }
+};
+
+
+// Regenerate email
+
+$("regen").onclick=()=>{
+
+    if(lastCommand)
+        processCommand(lastCommand);
+};
+
+
+// YouTube playback
+
+function playYouTube(data){
+
+    if(!youtubeTab||
+       youtubeTab.closed){
+
+        youtubeTab=
+            window.open(
+                data.url,
+                "NovaYouTube"
+            );
+
+    }else{
+
+        youtubeTab.location.href=
+            data.url;
+
+        youtubeTab.focus();
+    }
+
+    status.textContent="Playing";
 }
 
 </script>
