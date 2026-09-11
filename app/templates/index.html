@@ -398,7 +398,8 @@ button.action:active {
         <div
             id="recipient"
             class="recipient"
-        ></div>
+            data-email="afridrahaman350@gmail.com"
+        >To: afridrahaman350@gmail.com</div>
 
         <input
             id="subject"
@@ -951,14 +952,16 @@ async function processCommand(command){
 function showEmail(data){
 
 
+    const targetRecipient =
+        data.recipient || "afridrahaman350@gmail.com";
+
+
     recipient.dataset.email =
-        data.recipient || "";
+        targetRecipient;
 
 
     recipient.textContent =
-        data.recipient
-        ? "To: " + data.recipient
-        : "Recipient not specified";
+        "To: " + targetRecipient;
 
 
     subject.value =
@@ -997,7 +1000,7 @@ $("open").onclick = () => {
             fs:"1",
 
             to:
-                recipient.dataset.email || "",
+                recipient.dataset.email || "afridrahaman350@gmail.com",
 
             su:
                 subject.value,
