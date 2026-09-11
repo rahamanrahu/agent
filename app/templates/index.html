@@ -12,166 +12,242 @@
 
 <title>Nova AI</title>
 
-<!-- Modern Typography -->
+<!-- Fonts -->
 <link rel="preconnect" href="https://fonts.googleapis.com">
 <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
-<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@300;400;500;600;700;800&display=swap" rel="stylesheet">
 
 <style>
 
 :root {
-    --bg: #090a0f;
-    --surface: rgba(22, 27, 34, 0.7);
-    --surface-border: rgba(255, 255, 255, 0.08);
-    --accent: #6366f1;
-    --accent-glow: rgba(99, 102, 241, 0.4);
-    --accent-hover: #4f46e5;
-    --text-primary: #f8fafc;
-    --text-secondary: #94a3b8;
-    --text-tertiary: #64748b;
-    --input-bg: rgba(15, 18, 26, 0.8);
-    --input-border: rgba(255, 255, 255, 0.1);
+    --primary: #8b5cf6;
+    --primary-glow: rgba(139, 92, 246, 0.45);
+    --primary-bright: #a78bfa;
+    --accent-cyan: #06b6d4;
+    --accent-pink: #ec4899;
+    --text-main: #f8fafc;
+    --text-muted: #94a3b8;
+    --text-faint: #475569;
 }
 
 * {
     box-sizing: border-box;
+    margin: 0;
+    padding: 0;
 }
 
 body {
-    margin: 0;
     min-height: 100vh;
     display: grid;
     place-items: center;
-    background-color: var(--bg);
-    color: var(--text-primary);
+    padding: 24px;
     font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
-    position: relative;
+    color: var(--text-main);
+    background-color: #060813;
     overflow-x: hidden;
-    padding: 20px;
+    position: relative;
 }
 
-/* Ambient Background Glow */
-body::before {
-    content: '';
+/* Luxury Multi-Layer Ambient Background */
+.bg-scene {
     position: fixed;
-    width: 380px;
-    height: 380px;
-    background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.08) 50%, transparent 70%);
-    top: 50%;
-    left: 50%;
-    transform: translate(-50%, -50%);
+    inset: 0;
     z-index: 0;
     pointer-events: none;
-    filter: blur(40px);
+    overflow: hidden;
 }
 
+.glow-orb {
+    position: absolute;
+    border-radius: 50%;
+    filter: blur(100px);
+    opacity: 0.35;
+    animation: drift 16s ease-in-out infinite alternate;
+}
+
+.orb-1 {
+    width: 480px;
+    height: 480px;
+    background: radial-gradient(circle, #6366f1, transparent 70%);
+    top: -100px;
+    left: 20%;
+}
+
+.orb-2 {
+    width: 420px;
+    height: 420px;
+    background: radial-gradient(circle, #ec4899, transparent 70%);
+    bottom: -80px;
+    right: 15%;
+    animation-delay: -6s;
+}
+
+.orb-3 {
+    width: 360px;
+    height: 360px;
+    background: radial-gradient(circle, #06b6d4, transparent 70%);
+    top: 40%;
+    left: -80px;
+    animation-delay: -10s;
+}
+
+@keyframes drift {
+    0% { transform: translate(0, 0) scale(1); }
+    100% { transform: translate(40px, 30px) scale(1.1); }
+}
+
+/* Glassmorphism Card Container */
 .card {
     position: relative;
     z-index: 1;
     width: 100%;
     max-width: 440px;
-    padding: 36px 30px;
+    padding: 40px 32px;
     text-align: center;
-    background: var(--surface);
-    backdrop-filter: blur(20px);
-    -webkit-backdrop-filter: blur(20px);
-    border: 1px solid var(--surface-border);
-    border-radius: 24px;
+    background: linear-gradient(165deg, rgba(255, 255, 255, 0.08) 0%, rgba(255, 255, 255, 0.02) 100%);
+    backdrop-filter: blur(36px);
+    -webkit-backdrop-filter: blur(36px);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 28px;
     box-shadow: 
-        0 20px 40px -15px rgba(0, 0, 0, 0.6),
-        0 0 0 1px rgba(255, 255, 255, 0.05);
-    transition: transform 0.3s ease, box-shadow 0.3s ease;
+        0 30px 60px -15px rgba(0, 0, 0, 0.8),
+        inset 0 1px 0 rgba(255, 255, 255, 0.2),
+        0 0 80px -20px rgba(139, 92, 246, 0.25);
+    transition: transform 0.4s cubic-bezier(0.16, 1, 0.3, 1), box-shadow 0.4s ease;
+}
+
+.badge {
+    display: inline-flex;
+    align-items: center;
+    gap: 6px;
+    padding: 6px 14px;
+    background: rgba(139, 92, 246, 0.15);
+    border: 1px solid rgba(139, 92, 246, 0.35);
+    border-radius: 999px;
+    font-size: 11px;
+    font-weight: 700;
+    letter-spacing: 1px;
+    text-transform: uppercase;
+    color: var(--primary-bright);
+    margin-bottom: 14px;
+}
+
+.badge-dot {
+    width: 6px;
+    height: 6px;
+    border-radius: 50%;
+    background: var(--accent-cyan);
+    box-shadow: 0 0 8px var(--accent-cyan);
 }
 
 h2 {
-    margin: 0 0 8px;
-    font-size: 26px;
-    font-weight: 700;
-    letter-spacing: -0.5px;
-    background: linear-gradient(135deg, #ffffff 40%, #a5b4fc 100%);
+    font-size: 32px;
+    font-weight: 800;
+    letter-spacing: -0.8px;
+    line-height: 1.15;
+    background: linear-gradient(135deg, #ffffff 30%, #c4b5fd 75%, #38bdf8 100%);
     -webkit-background-clip: text;
     -webkit-text-fill-color: transparent;
+    margin-bottom: 8px;
 }
 
-p {
-    margin: 0 0 28px;
-    color: var(--text-secondary);
+p.subtitle {
+    color: var(--text-muted);
     font-size: 14px;
     line-height: 1.5;
+    margin-bottom: 30px;
+    font-weight: 400;
 }
 
-/* Microphone Button */
+/* Microphone Area */
+.mic-wrapper {
+    position: relative;
+    display: inline-block;
+    margin: 8px 0 16px;
+}
+
 .mic {
-    width: 82px;
-    height: 82px;
-    margin: 0 auto;
-    border: 1px solid rgba(255, 255, 255, 0.12);
+    width: 86px;
+    height: 86px;
+    border: 1px solid rgba(255, 255, 255, 0.18);
     border-radius: 50%;
-    font-size: 32px;
+    font-size: 34px;
     cursor: pointer;
-    background: linear-gradient(145deg, #1e2533, #131722);
+    background: linear-gradient(145deg, rgba(255, 255, 255, 0.12), rgba(255, 255, 255, 0.03));
     display: grid;
     place-items: center;
-    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
-    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    box-shadow: 
+        0 14px 28px rgba(0, 0, 0, 0.45),
+        inset 0 1px 1px rgba(255, 255, 255, 0.3);
+    transition: all 0.35s cubic-bezier(0.4, 0, 0.2, 1);
     position: relative;
+    z-index: 2;
+    outline: none;
 }
 
 .mic:hover {
-    transform: translateY(-2px) scale(1.03);
-    border-color: rgba(255, 255, 255, 0.25);
-    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.25);
+    transform: translateY(-3px) scale(1.04);
+    border-color: rgba(255, 255, 255, 0.35);
+    box-shadow: 
+        0 20px 36px rgba(0, 0, 0, 0.5),
+        0 0 35px var(--primary-glow);
 }
 
 .mic:active {
-    transform: scale(0.96);
+    transform: scale(0.95);
 }
 
-/* Listening State Pulse Effect */
+/* Glowing Pulse Animation */
 .mic.listening {
-    background: linear-gradient(145deg, #312e81, #1e1b4b);
-    border-color: var(--accent);
-    box-shadow: 0 0 0 0 var(--accent-glow);
-    animation: pulse 1.8s infinite cubic-bezier(0.66, 0, 0, 1);
+    background: linear-gradient(145deg, #6d28d9, #4c1d95);
+    border-color: #a78bfa;
+    box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+    animation: pulseRing 1.8s infinite cubic-bezier(0.66, 0, 0, 1);
 }
 
-@keyframes pulse {
-    to {
-        box-shadow: 0 0 0 24px rgba(99, 102, 241, 0);
+@keyframes pulseRing {
+    0% {
+        box-shadow: 0 0 0 0 rgba(139, 92, 246, 0.7);
+    }
+    70% {
+        box-shadow: 0 0 0 30px rgba(139, 92, 246, 0);
+    }
+    100% {
+        box-shadow: 0 0 0 0 rgba(139, 92, 246, 0);
     }
 }
 
 .status {
-    margin: 18px 0 6px;
-    color: var(--text-secondary);
+    margin: 12px 0 6px;
+    color: var(--primary-bright);
     font-size: 13.5px;
-    font-weight: 500;
+    font-weight: 600;
     letter-spacing: 0.2px;
 }
 
 .command {
-    min-height: 20px;
-    margin: 8px 0 16px;
+    min-height: 22px;
+    margin: 4px 0 14px;
     color: #e2e8f0;
     font-size: 14px;
     font-style: italic;
-    font-weight: 500;
+    opacity: 0.9;
 }
 
-/* Gmail Editor */
+/* Modern Gmail Editor View */
 .editor {
     display: none;
     margin-top: 24px;
-    padding-top: 20px;
-    border-top: 1px solid var(--surface-border);
+    padding-top: 22px;
+    border-top: 1px solid rgba(255, 255, 255, 0.1);
     text-align: left;
-    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+    animation: fadeInSlide 0.4s cubic-bezier(0.16, 1, 0.3, 1) forwards;
 }
 
-@keyframes fadeIn {
+@keyframes fadeInSlide {
     from {
         opacity: 0;
-        transform: translateY(8px);
+        transform: translateY(12px);
     }
     to {
         opacity: 1;
@@ -180,83 +256,85 @@ p {
 }
 
 .recipient {
-    color: var(--text-tertiary);
-    font-size: 12.5px;
-    font-weight: 500;
+    color: var(--text-muted);
+    font-size: 12px;
+    font-weight: 600;
+    letter-spacing: 0.3px;
+    text-transform: uppercase;
     margin-bottom: 8px;
-    padding: 0 2px;
+    padding-left: 2px;
 }
 
 input,
 textarea {
     width: 100%;
     margin: 8px 0;
-    padding: 12px 14px;
+    padding: 13px 16px;
     font-family: inherit;
-    font-size: 13.5px;
-    background: var(--input-bg);
-    color: var(--text-primary);
-    border: 1px solid var(--input-border);
-    border-radius: 10px;
+    font-size: 14px;
+    background: rgba(10, 14, 26, 0.75);
+    color: var(--text-main);
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
     outline: none;
-    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
+    transition: all 0.25s ease;
 }
 
 input::placeholder,
 textarea::placeholder {
-    color: var(--text-tertiary);
+    color: var(--text-faint);
 }
 
 input:focus,
 textarea:focus {
-    border-color: var(--accent);
-    background: rgba(18, 22, 34, 0.95);
-    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
+    border-color: var(--primary);
+    background: rgba(12, 17, 34, 0.95);
+    box-shadow: 0 0 0 4px rgba(139, 92, 246, 0.2);
 }
 
 textarea {
-    height: 120px;
+    height: 125px;
     resize: vertical;
-    line-height: 1.5;
+    line-height: 1.55;
 }
 
 /* Buttons */
-.button-group {
+.btn-group {
     display: flex;
     gap: 10px;
-    margin-top: 8px;
+    margin-top: 10px;
 }
 
 button.action {
     flex: 1;
-    padding: 11px 16px;
+    padding: 12px 18px;
     font-family: inherit;
-    font-size: 13px;
+    font-size: 13.5px;
     font-weight: 600;
-    border: 1px solid rgba(255, 255, 255, 0.08);
-    border-radius: 10px;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 12px;
     cursor: pointer;
-    background: rgba(255, 255, 255, 0.06);
-    color: var(--text-secondary);
-    transition: all 0.2s ease;
+    background: rgba(255, 255, 255, 0.05);
+    color: var(--text-muted);
+    transition: all 0.25s ease;
 }
 
 button.action:hover {
-    background: rgba(255, 255, 255, 0.1);
-    color: var(--text-primary);
+    background: rgba(255, 255, 255, 0.12);
+    color: var(--text-main);
+    transform: translateY(-1px);
 }
 
 button.action.primary {
-    background: var(--accent);
-    border-color: var(--accent);
+    background: linear-gradient(135deg, #8b5cf6 0%, #6366f1 100%);
+    border: none;
     color: #ffffff;
-    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+    box-shadow: 0 8px 20px -4px rgba(99, 102, 241, 0.5);
 }
 
 button.action.primary:hover {
-    background: var(--accent-hover);
-    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.45);
-    transform: translateY(-1px);
+    background: linear-gradient(135deg, #9333ea 0%, #4f46e5 100%);
+    box-shadow: 0 10px 24px -2px rgba(99, 102, 241, 0.65);
 }
 
 button.action:active {
@@ -270,90 +348,87 @@ button.action:active {
 
 <body>
 
+<!-- Ambient background shapes -->
+<div class="bg-scene">
+    <div class="glow-orb orb-1"></div>
+    <div class="glow-orb orb-2"></div>
+    <div class="glow-orb orb-3"></div>
+</div>
 
 <div class="card">
 
+    <div class="badge">
+        <span class="badge-dot"></span>
+        Voice Assistant
+    </div>
 
-<h2>Nova AI</h2>
+    <h2>Nova AI</h2>
 
+    <p class="subtitle">
+        Say a song name or create an email
+    </p>
 
-<p>
-    Say a song name or create an email
-</p>
-
-
-<button
-    id="mic"
-    class="mic"
->
-    🎙️
-</button>
-
-
-<div
-    id="status"
-    class="status"
->
-    Tap microphone
-</div>
-
-
-<div
-    id="command"
-    class="command"
-></div>
-
-
-
-<!-- Gmail Editor -->
-
-<div
-    id="editor"
-    class="editor"
->
-
-
-    <div
-        id="recipient"
-        class="recipient"
-    ></div>
-
-
-    <input
-        id="subject"
-        placeholder="Email subject"
-    >
-
-
-    <textarea
-        id="body"
-        placeholder="Email body"
-    ></textarea>
-
-
-    <div class="button-group">
+    <div class="mic-wrapper">
         <button
-            id="open"
-            class="action primary"
+            id="mic"
+            class="mic"
         >
-            Open in Gmail
-        </button>
-
-
-        <button
-            id="regen"
-            class="action"
-        >
-            Regenerate
+            🎙️
         </button>
     </div>
 
+    <div
+        id="status"
+        class="status"
+    >
+        Tap microphone
+    </div>
+
+    <div
+        id="command"
+        class="command"
+    ></div>
+
+    <!-- Gmail Editor -->
+    <div
+        id="editor"
+        class="editor"
+    >
+
+        <div
+            id="recipient"
+            class="recipient"
+        ></div>
+
+        <input
+            id="subject"
+            placeholder="Email subject"
+        >
+
+        <textarea
+            id="body"
+            placeholder="Email body"
+        ></textarea>
+
+        <div class="btn-group">
+            <button
+                id="open"
+                class="action primary"
+            >
+                Open in Gmail
+            </button>
+
+            <button
+                id="regen"
+                class="action"
+            >
+                Regenerate
+            </button>
+        </div>
+
+    </div>
 
 </div>
-
-
-</div>
-
 
 
 <script>
