@@ -2,7 +2,6 @@ import os
 import re
 import urllib.parse
 
-CLIENT_EMAIL = os.getenv("CLIENT_EMAIL", "")
 
 KEYWORDS = (
     "gmail", "email", "e-mail", "mail",
@@ -26,12 +25,6 @@ def extract_email(text):
     )
     if match:
         return f"{match.group(1)}@{match.group(2)}.{match.group(3)}"
-
-    if CLIENT_EMAIL and any(
-        x in text.lower()
-        for x in ("my client", "the client", "to client", "for my client")
-    ):
-        return CLIENT_EMAIL
 
     return ""
 
