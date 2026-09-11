@@ -12,149 +12,255 @@
 
 <title>Nova AI</title>
 
+<!-- Modern Typography -->
+<link rel="preconnect" href="https://fonts.googleapis.com">
+<link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+<link href="https://fonts.googleapis.com/css2?family=Plus+Jakarta+Sans:wght@400;500;600;700&display=swap" rel="stylesheet">
 
 <style>
 
-body{
-
-    margin:0;
-
-    height:100vh;
-
-    display:grid;
-
-    place-items:center;
-
-    background:#111;
-
-    color:white;
-
-    font-family:Arial;
+:root {
+    --bg: #090a0f;
+    --surface: rgba(22, 27, 34, 0.7);
+    --surface-border: rgba(255, 255, 255, 0.08);
+    --accent: #6366f1;
+    --accent-glow: rgba(99, 102, 241, 0.4);
+    --accent-hover: #4f46e5;
+    --text-primary: #f8fafc;
+    --text-secondary: #94a3b8;
+    --text-tertiary: #64748b;
+    --input-bg: rgba(15, 18, 26, 0.8);
+    --input-border: rgba(255, 255, 255, 0.1);
 }
 
-
-.card{
-
-    width:400px;
-
-    padding:25px;
-
-    text-align:center;
-
-    background:#222;
-
-    border:1px solid #444;
-
-    border-radius:10px;
+* {
+    box-sizing: border-box;
 }
 
-
-.mic{
-
-    width:75px;
-
-    height:75px;
-
-    border:0;
-
-    border-radius:50%;
-
-    font-size:30px;
-
-    cursor:pointer;
-
-    background:#eee;
+body {
+    margin: 0;
+    min-height: 100vh;
+    display: grid;
+    place-items: center;
+    background-color: var(--bg);
+    color: var(--text-primary);
+    font-family: 'Plus Jakarta Sans', system-ui, -apple-system, sans-serif;
+    position: relative;
+    overflow-x: hidden;
+    padding: 20px;
 }
 
-
-.mic.listening{
-
-    background:#aaa;
+/* Ambient Background Glow */
+body::before {
+    content: '';
+    position: fixed;
+    width: 380px;
+    height: 380px;
+    background: radial-gradient(circle, rgba(99, 102, 241, 0.18) 0%, rgba(168, 85, 247, 0.08) 50%, transparent 70%);
+    top: 50%;
+    left: 50%;
+    transform: translate(-50%, -50%);
+    z-index: 0;
+    pointer-events: none;
+    filter: blur(40px);
 }
 
-
-.status{
-
-    margin:15px;
-
-    color:#aaa;
+.card {
+    position: relative;
+    z-index: 1;
+    width: 100%;
+    max-width: 440px;
+    padding: 36px 30px;
+    text-align: center;
+    background: var(--surface);
+    backdrop-filter: blur(20px);
+    -webkit-backdrop-filter: blur(20px);
+    border: 1px solid var(--surface-border);
+    border-radius: 24px;
+    box-shadow: 
+        0 20px 40px -15px rgba(0, 0, 0, 0.6),
+        0 0 0 1px rgba(255, 255, 255, 0.05);
+    transition: transform 0.3s ease, box-shadow 0.3s ease;
 }
 
-
-.command{
-
-    margin:10px;
-
-    color:#ccc;
+h2 {
+    margin: 0 0 8px;
+    font-size: 26px;
+    font-weight: 700;
+    letter-spacing: -0.5px;
+    background: linear-gradient(135deg, #ffffff 40%, #a5b4fc 100%);
+    -webkit-background-clip: text;
+    -webkit-text-fill-color: transparent;
 }
 
-
-.editor{
-
-    display:none;
-
-    margin-top:20px;
-
-    text-align:left;
+p {
+    margin: 0 0 28px;
+    color: var(--text-secondary);
+    font-size: 14px;
+    line-height: 1.5;
 }
 
-
-.recipient{
-
-    color:#aaa;
-
-    font-size:13px;
+/* Microphone Button */
+.mic {
+    width: 82px;
+    height: 82px;
+    margin: 0 auto;
+    border: 1px solid rgba(255, 255, 255, 0.12);
+    border-radius: 50%;
+    font-size: 32px;
+    cursor: pointer;
+    background: linear-gradient(145deg, #1e2533, #131722);
+    display: grid;
+    place-items: center;
+    box-shadow: 0 10px 25px rgba(0, 0, 0, 0.4);
+    transition: all 0.3s cubic-bezier(0.4, 0, 0.2, 1);
+    position: relative;
 }
 
+.mic:hover {
+    transform: translateY(-2px) scale(1.03);
+    border-color: rgba(255, 255, 255, 0.25);
+    box-shadow: 0 12px 30px rgba(99, 102, 241, 0.25);
+}
+
+.mic:active {
+    transform: scale(0.96);
+}
+
+/* Listening State Pulse Effect */
+.mic.listening {
+    background: linear-gradient(145deg, #312e81, #1e1b4b);
+    border-color: var(--accent);
+    box-shadow: 0 0 0 0 var(--accent-glow);
+    animation: pulse 1.8s infinite cubic-bezier(0.66, 0, 0, 1);
+}
+
+@keyframes pulse {
+    to {
+        box-shadow: 0 0 0 24px rgba(99, 102, 241, 0);
+    }
+}
+
+.status {
+    margin: 18px 0 6px;
+    color: var(--text-secondary);
+    font-size: 13.5px;
+    font-weight: 500;
+    letter-spacing: 0.2px;
+}
+
+.command {
+    min-height: 20px;
+    margin: 8px 0 16px;
+    color: #e2e8f0;
+    font-size: 14px;
+    font-style: italic;
+    font-weight: 500;
+}
+
+/* Gmail Editor */
+.editor {
+    display: none;
+    margin-top: 24px;
+    padding-top: 20px;
+    border-top: 1px solid var(--surface-border);
+    text-align: left;
+    animation: fadeIn 0.4s cubic-bezier(0.16, 1, 0.3, 1);
+}
+
+@keyframes fadeIn {
+    from {
+        opacity: 0;
+        transform: translateY(8px);
+    }
+    to {
+        opacity: 1;
+        transform: translateY(0);
+    }
+}
+
+.recipient {
+    color: var(--text-tertiary);
+    font-size: 12.5px;
+    font-weight: 500;
+    margin-bottom: 8px;
+    padding: 0 2px;
+}
 
 input,
-textarea{
-
-    width:100%;
-
-    margin:6px 0;
-
-    padding:10px;
-
-    box-sizing:border-box;
-
-    background:#111;
-
-    color:white;
-
-    border:1px solid #444;
-
-    border-radius:5px;
+textarea {
+    width: 100%;
+    margin: 8px 0;
+    padding: 12px 14px;
+    font-family: inherit;
+    font-size: 13.5px;
+    background: var(--input-bg);
+    color: var(--text-primary);
+    border: 1px solid var(--input-border);
+    border-radius: 10px;
+    outline: none;
+    transition: border-color 0.2s, box-shadow 0.2s, background 0.2s;
 }
 
-
-textarea{
-
-    height:130px;
-
-    resize:vertical;
+input::placeholder,
+textarea::placeholder {
+    color: var(--text-tertiary);
 }
 
-
-button.action{
-
-    padding:10px 14px;
-
-    margin-top:5px;
-
-    border:0;
-
-    border-radius:5px;
-
-    cursor:pointer;
+input:focus,
+textarea:focus {
+    border-color: var(--accent);
+    background: rgba(18, 22, 34, 0.95);
+    box-shadow: 0 0 0 3px rgba(99, 102, 241, 0.2);
 }
 
+textarea {
+    height: 120px;
+    resize: vertical;
+    line-height: 1.5;
+}
 
-.primary{
+/* Buttons */
+.button-group {
+    display: flex;
+    gap: 10px;
+    margin-top: 8px;
+}
 
-    background:#666;
+button.action {
+    flex: 1;
+    padding: 11px 16px;
+    font-family: inherit;
+    font-size: 13px;
+    font-weight: 600;
+    border: 1px solid rgba(255, 255, 255, 0.08);
+    border-radius: 10px;
+    cursor: pointer;
+    background: rgba(255, 255, 255, 0.06);
+    color: var(--text-secondary);
+    transition: all 0.2s ease;
+}
 
-    color:white;
+button.action:hover {
+    background: rgba(255, 255, 255, 0.1);
+    color: var(--text-primary);
+}
+
+button.action.primary {
+    background: var(--accent);
+    border-color: var(--accent);
+    color: #ffffff;
+    box-shadow: 0 4px 12px rgba(99, 102, 241, 0.3);
+}
+
+button.action.primary:hover {
+    background: var(--accent-hover);
+    box-shadow: 0 6px 16px rgba(99, 102, 241, 0.45);
+    transform: translateY(-1px);
+}
+
+button.action:active {
+    transform: translateY(1px);
 }
 
 </style>
@@ -225,20 +331,22 @@ button.action{
     ></textarea>
 
 
-    <button
-        id="open"
-        class="action primary"
-    >
-        Open in Gmail
-    </button>
+    <div class="button-group">
+        <button
+            id="open"
+            class="action primary"
+        >
+            Open in Gmail
+        </button>
 
 
-    <button
-        id="regen"
-        class="action"
-    >
-        Regenerate
-    </button>
+        <button
+            id="regen"
+            class="action"
+        >
+            Regenerate
+        </button>
+    </div>
 
 
 </div>
